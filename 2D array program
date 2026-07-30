@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int rows, cols;
+
+    // Input number of rows and columns
+    cout << "Enter number of rows: ";
+    if (!(cin >> rows) || rows <= 0) {
+        cout << "Invalid input for rows.\n";
+        return 1;
+    }
+
+    cout << "Enter number of columns: ";
+    if (!(cin >> cols) || cols <= 0) {
+        cout << "Invalid input for columns.\n";
+        return 1;
+    }
+
+    // Declare 2D array with given size
+    int arr[50][50]; // Max size limit for simplicity
+
+    if (rows > 50 || cols > 50) {
+        cout << "Error: Maximum allowed size is 50x50.\n";
+        return 1;
+    }
+
+    // Input elements
+    cout << "Enter elements of the array:\n";
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << "Element [" << i << "][" << j << "]: ";
+            if (!(cin >> arr[i][j])) {
+                cout << "Invalid input. Please enter integers only.\n";
+                return 1;
+            }
+        }
+    }
+
+    // Display the array
+    cout << "\nThe 2D array is:\n";
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << arr[i][j] << "\t";
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
