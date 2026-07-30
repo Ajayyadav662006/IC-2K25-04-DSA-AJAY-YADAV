@@ -1,0 +1,35 @@
+#include <iostream>
+#include <limits> // For numeric_limits
+using namespace std;
+
+int main() {
+    int n;
+
+    // Ask for array size
+    cout << "Enter number of elements (1 to 100): ";
+    if (!(cin >> n) || n <= 0 || n > 100) {
+        cout << "Invalid size. Please enter a number between 1 and 100.\n";
+        return 1;
+    }
+
+    int arr[100]; // Static array with max size 100
+
+    // Input array elements
+    cout << "Enter " << n << " integers:\n";
+    for (int i = 0; i < n; i++) {
+        while (!(cin >> arr[i])) { // Validate integer input
+            cout << "Invalid input. Please enter an integer: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+
+    // Output array elements
+    cout << "Array elements are: ";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
