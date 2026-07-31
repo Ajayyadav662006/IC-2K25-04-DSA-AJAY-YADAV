@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+// Structure to represent each non-zero element triplet
+struct Element {
+    int row;
+    int col;
+    int value;
+};
+
+// Class to manage the Sparse Matrix representation
+class SparseMatrix {
+private:
+    int totalRows;
+    int totalCols;
+    int totalNonZeros;
+    vector<Element> elements; // Dynamic array to store triplets
+
+public:
+    // Constructor
+    SparseMatrix(int r, int c, int nz) {
+        totalRows = r;
+        totalCols = c;
+        totalNonZeros = nz;
+    }
+
+    // Function to add a non-zero element to the representation
+    void addElement(int r, int c, int val) {
+        Element temp = {r, c, val};
+        elements.push_back(temp);
+    }
+
+    // Function to display the compressed 3-column sparse matrix
+    void display() const {
+        cout << "\n--- Sparse Matrix Representation (Row, Column, Value) ---\n";
+        cout << "Rows\tColumns\tValues\n";
+        
+        // The first row traditionally stores metadata: [Total Rows, Total Cols, Non-Zeros]
+        cout << totalRows << "\t" << totalCols << "\t" << totalNonZeros << "\n";
+        cout << "-------------------------------\n";
+        
+        // Print all non-zero triplets
+        for (const auto& el : elements) {
+            cout << el.row << "\t" << el.col << "\t" << el.value << "\n";
+        }
+    }
+};
+
+int main() {
+    // 1. Define a sample 4x5 dense matrix with majority zeros
+    int denseMatrix[4][5] = {
+        {0, 0, 3, 0, 4},
+        {0, 0, 5, 7, 0},
+        {0, 0, 0, 0, 0},
+        {0, 2, 6, 0, 0}
+    };
+
+    int rows = 4;
+    int cols = 5;
+    int nonZeroCount = 0;
+
+    // 2. Count the number of non-zero elements
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (denseMatrix[i][j] != 0) {
+                nonZeroCount++;
+            }
+        }
+    }
+
+    // 3. Create the Sparse Matrix object
+    SparseMatrix sm(rows, cols, nonZeroCount);
+
+    // 4. Populate the sparse matrix with non-zero elements
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (denseMatrix[i][j] != 0) {
+                sm.addElement(i, j, denseMatrix[i][j]);
+            }
+        }
+    }
+
+    // 5. Display the structured sparse matrix
+    sm.display();
+
+    return 0;
