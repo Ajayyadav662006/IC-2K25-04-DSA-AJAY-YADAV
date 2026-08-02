@@ -1,0 +1,113 @@
+#include <iostream>
+
+using namespace std;
+
+// Maximum size allowed for the matrices
+const int MAX = 10;
+
+// Function to take input elements for a matrix
+void inputMatrix(int mat[MAX][MAX], int rows, int cols) {
+    cout << "Enter elements (" << rows << "x" << cols << "):\n";
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << "Element [" << i + 1 << "][" << j + 1 << "]: ";
+            cin >> mat[i][j];
+        }
+    }
+}
+
+// Function to print a matrix
+void displayMatrix(int mat[MAX][MAX], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << mat[i][j] << "\t";
+        }
+        cout << "\n";
+    }
+}
+
+int main() {
+    int matA[MAX][MAX], matB[MAX][MAX], result[MAX][MAX];
+    int r1, c1, r2, c2, choice;
+
+    cout << "=== Easy Matrix Calculator ===\n";
+    cout << "1. Addition\n2. Subtraction\n3. Multiplication\n";
+    cout << "Enter your choice (1-3): ";
+    cin >> choice;
+
+    if (choice < 1 || choice > 3) {
+        cout << "Invalid choice!\n";
+        return 0;
+    }
+
+    // Input dimensions for Matrix A
+    cout << "Enter rows and columns for Matrix A: ";
+    cin >> r1 >> c1;
+
+    // Input dimensions for Matrix B
+    cout << "Enter rows and columns for Matrix B: ";
+    cin >> r2 >> c2;
+
+    // Perform operations based on rules of linear algebra
+    switch (choice) {
+        case 1: // Addition
+            if (r1 != r2 || c1 != c2) {
+                cout << "Error: Matrices must have identical dimensions for addition!\n";
+                return 0;
+            }
+            inputMatrix(matA, r1, c1);
+            inputMatrix(matB, r2, c2);
+            
+            for (int i = 0; i < r1; i++)
+                for (int j = 0; j < c1; j++)
+                    result[i][j] = matA[i][j] + matB[i][j];
+            
+            cout << "\nResult of Addition:\n";
+            displayMatrix(result, r1, c1);
+            break;
+
+        case 2: // Subtraction
+            if (r1 != r2 || c1 != c2) {
+                cout << "Error: Matrices must have identical dimensions for subtraction!\n";
+                return 0;
+            }
+            inputMatrix(matA, r1, c1);
+            inputMatrix(matB, r2, c2);
+            
+            for (int i = 0; i < r1; i++)
+                for (int j = 0; j < c1; j++)
+                    result[i][j] = matA[i][j] - matB[i][j];
+            
+            cout << "\nResult of Subtraction:\n";
+            displayMatrix(result, r1, c1);
+            break;
+
+        case 3: // Multiplication
+            if (c1 != r2) {
+                cout << "Error: Columns of Matrix A must equal Rows of Matrix B!\n";
+                return 0;
+            }
+            inputMatrix(matA, r1, c1);
+            inputMatrix(matB, r2, c2);
+            
+            // Initialize result matrix elements to zero
+            for (int i = 0; i < r1; i++)
+                for (int j = 0; j < c2; j++)
+                    result[i][j] = 0;
+
+            // Matrix multiplication logic
+            for (int i = 0; i < r1; i++) {
+                for (int j = 0; j < c2; j++) {
+                    for (int k = 0; k < c1; k++) {
+                        result[i][j] += matA[i][k] * matB[k][j];
+                    }
+                }
+            }
+            
+            cout << "\nResult of Multiplication:\n";
+            displayMatrix(result, r1, c2);
+            break;
+    }
+
+    return 0;
+}
