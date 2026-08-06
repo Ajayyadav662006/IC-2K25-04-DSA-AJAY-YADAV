@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    // Initialize an array with sample values
+    int arr[] = {25, 14, 56, 15, 36, 56, 77, 18, 29, 6};
+    
+    // Calculate the total number of elements in the array
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    // Assume the first element is the smallest
+    int minElement = arr[0];
+
+    // Loop through the rest of the array to find any smaller values
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < minElement) {
+            minElement = arr[i]; // Update the minimum value
+        }
+    }
+
+    // Output the final result
+    cout << "The smallest element in the array is: " << minElement << endl;
+
+    return 0;
+}
