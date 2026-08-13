@@ -1,0 +1,21 @@
+#include  <iostream>
+using namespace std;
+int main(){
+    int arr[5]={15,45,67,80,50};
+    int target ,index=-1;
+cout<<"ENTER THE ELEMENT SEARCH:";
+cin>>target;
+for(int i=0;i<5;i++){ 
+    if (arr[i]==target){
+        target=i;
+        break;
+    }
+}
+if(target!=-1){
+    cout<<"ELEMENT FOUND AT POSITION:"<<target<<endl;
+}
+    else{
+        cout<<"ELEMENT DOES NOT FOUND IN THE ARRAY"<<endl;
+    }
+    return 0;
+    }
