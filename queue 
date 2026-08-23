@@ -1,0 +1,78 @@
+#include <iostream>
+using namespace std;
+#define SIZE 5 // Maximum capacity of the queue
+
+class Queue {
+private:
+    int items[SIZE];
+    int front;
+    int rear;
+
+public:
+    // Constructor to initialize empty indices
+    Queue() {
+        front = -1;
+        rear = -1;
+    }
+
+    // Check if the queue is full
+    bool isFull() {
+        return (rear == SIZE - 1);
+    }
+
+    // Check if the queue is empty
+    bool isEmpty() {
+        return (front == -1 || front > rear);
+    }
+
+    // Enqueue: Add an element to the rear
+    void enqueue(int value) {
+        if (isFull()) {
+            std::cout << "Queue is full! Cannot insert " << value << std::endl;
+            return;
+        }
+        if (front == -1) front = 0; // If first element, set front to 0
+        rear++;
+        items[rear] = value;
+        cout << "Inserted: " << value << endl;
+    }
+
+    // Dequeue: Remove an element from the front
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Queue is empty! Nothing to remove." << endl;
+            return;
+        }
+        cout << "Removed: " << items[front] << endl;
+        front++;
+    }
+
+    // Display all items currently in the queue
+    void display() {
+        if (isEmpty()) {
+           cout << "Queue is empty." << endl;
+            return;
+        }
+       cout << "Queue elements: ";
+        for (int i = front; i <= rear; i++) {
+            cout << items[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Queue q;
+
+    // Perform queue operations
+    q.enqueue(5);
+    q.enqueue(10);
+    q.enqueue(15);
+    
+    q.display(); // Prints: 5 10 15
+
+    q.dequeue(); // Removes 5
+    q.display(); // Prints: 10 15
+
+    return 0;
+}
