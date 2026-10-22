@@ -1,0 +1,171 @@
+#include <iostream>
+
+using namespace std;
+ 
+class Node {
+
+public:
+
+int data;
+
+Node* prev;
+
+Node* next;
+
+Node(int value) {
+
+data = value;
+
+prev = nullptr;
+
+next = nullptr;
+
+}
+
+ };
+
+
+class DoublyLinkedList {
+
+public:
+
+Node* head;
+
+DoublyLinkedList() {
+
+head = nullptr;
+
+}
+
+void insertAtBeginning (int value) { Node* newNode = new Node(value);
+
+if (head == nullptr) {
+
+head = newNode;
+
+return;
+
+}
+
+}
+
+newNode->next = head;
+
+head->prev = newNode;
+
+head = newNode;
+
+}
+void insertAtBeginning (int value) {
+
+Node* newNode = new Node(value);
+
+if (head == nullptr) {
+
+head = newNode;
+
+return;
+}
+
+}
+
+newNode->next = head;
+
+head->prev = newNode;
+
+head = newNode;
+
+void insertAtEnd(int value) {
+
+Node* newNode = new Node(value);
+
+if (head == nullptr) {
+
+head = newNode;
+
+return;
+
+}
+
+Node* current = head;
+
+while (current->next != nullptr) {
+
+current = current->next;
+
+}
+
+current->next = newNode;
+
+newNode->prev = current;
+
+}
+
+void displayForward() {
+
+Node* current = head;
+
+while (current != nullptr) {
+cout <<< current->data << " ";
+
+current = current->next;
+
+}
+
+cout << endl;
+
+}
+
+void displayBackward() {
+
+if (head == nullptr) {
+
+cout << endl;
+ return;
+}
+
+
+Node* current = head;
+
+while (current->next != nullptr) {
+
+current = current->next;
+
+}
+
+while (current != nullptr) {
+
+cout << current->data << " ";
+
+current = current->prev;
+
+}
+
+cout << endl;
+
+}
+
+};
+int main() {
+
+Doubly LinkedList list;
+
+list.insertAtEnd(60);
+
+list.insertAtEnd(70);
+
+list.insertAtEnd(80)
+
+list.insertAtBeginning (10);
+
+cout << "Forward: ";
+
+list.displayForward();
+
+cout << "Backward: ";
+
+list.displavBackward();
+
+return 0;
+
+}
