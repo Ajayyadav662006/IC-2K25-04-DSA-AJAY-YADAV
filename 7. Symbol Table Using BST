@@ -1,0 +1,91 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Node {
+    string name;
+    int value;
+
+    Node* left;
+    Node* right;
+
+    Node(string n, int v) {
+        name = n;
+        value = v;
+        left = right = NULL;
+    }
+};
+
+// Insert identifier
+Node* insert(Node* root, string name, int value) {
+    if (root == NULL)
+        return new Node(name, value);
+
+    if (name < root->name)
+        root->left = insert(root->left, name, value);
+
+    else if (name > root->name)
+        root->right = insert(root->right, name, value);
+
+    else
+        root->value = value;
+
+    return root;
+}
+
+// Search identifier
+Node* search(Node* root, string name) {
+    if (root == NULL || root->name == name)
+        return root;
+
+    if (name < root->name)
+        return search(root->left, name);
+
+    return search(root->right, name);
+}
+
+// Display symbol table
+void display(Node* root) {
+    if (root == NULL) return;
+
+    display(root->left);
+
+    cout << root->name
+         << " = " << root->value << endl;
+
+    display(root->right);
+}
+
+int main() {
+    Node* root = NULL;
+
+    root = insert(root, "age", 20);
+    root = insert(root, "marks", 85);
+    root = insert(root, "roll", 101);
+
+    cout << "Symbol Table:\n";
+    display(root);
+
+    string key = "marks";
+
+    Node* result = search(root, key);
+
+    cout << "\nSearching: " << key << endl;
+
+    if (result != NULL)
+        cout << "Value = " << result->value;
+    else
+        cout << "Identifier Not Found";
+
+    return 0;
+}
+ 
+Output:-
+Symbol Table:
+age = 20
+marks = 85
+roll = 101
+
+Searching: marks
+Value = 85
