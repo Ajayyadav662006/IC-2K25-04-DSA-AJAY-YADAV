@@ -1,0 +1,80 @@
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    
+    Node(int value) {
+        data = value;
+        left = right = NULL;
+    }
+};
+
+// Recursive Inorder
+void inorder(Node* root) {
+    if (root == NULL) return;
+    inorder(root->left);
+    cout << root->data << " ";
+    inorder(root->right);
+}
+
+// Recursive Preorder
+void preorder(Node* root) {
+    if (root == NULL) return;
+    cout << root->data << " ";
+    preorder(root->left);
+    preorder(root->right);
+}
+
+// Recursive Postorder
+void postorder(Node* root) {
+    if (root == NULL) return;
+    postorder(root->left);
+    postorder(root->right);
+    cout << root->data << " ";
+}
+
+// Iterative Inorder
+void iterativeInorder(Node* root) {
+    stack<Node*> s;
+    Node* curr = root;
+
+    while (curr != NULL || !s.empty()) {
+        while (curr != NULL) {
+            s.push(curr);
+            curr = curr->left;
+        }
+
+        curr = s.top();
+        s.pop();
+
+        cout << curr->data << " ";
+        curr = curr->right;
+    }
+}
+
+int main() {
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+
+    cout << "Recursive Inorder: ";
+    inorder(root);
+
+    cout << "\nRecursive Preorder: ";
+    preorder(root);
+
+    cout << "\nRecursive Postorder: ";
+    postorder(root);
+
+    cout << "\nIterative Inorder: ";
+    iterativeInorder(root);
+
+    return 0;
+}
