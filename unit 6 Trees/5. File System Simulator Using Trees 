@@ -1,0 +1,93 @@
+
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+struct Directory {
+    string name;
+    vector<Directory*> children;
+
+    Directory(string n) {
+        name = n;
+    }
+};
+
+// Add folder or file
+void add(Directory* parent, string name) {
+    Directory* child = new Directory(name);
+    parent->children.push_back(child);
+}
+
+// Display directory structure
+void display(Directory* root, int level = 0) {
+    if (root == NULL) return;
+
+    for (int i = 0; i < level; i++)
+        cout << "  ";
+
+    cout << root->name << endl;
+
+    for (Directory* child : root->children)
+        display(child, level + 1);
+}
+
+// Search file or folder
+bool search(Directory* root, string key) {
+    if (root == NULL) return false;
+
+    if (root->name == key)
+        return true;
+
+    for (Directory* child : root->children) {
+        if (search(child, key))
+            return true;
+    }
+
+    return false;
+}
+
+int main() {
+    Directory* root = new Directory("Root");
+
+    Directory* documents = new Directory("Documents");
+    Directory* pictures = new Directory("Pictures");
+    Directory* videos = new Directory("Videos");
+
+    root->children.push_back(documents);
+    root->children.push_back(pictures);
+    root->children.push_back(videos);
+
+    add(documents, "Notes.txt");
+    add(documents, "Assignment.txt");
+    add(pictures, "Photo.jpg");
+    add(videos, "Movie.mp4");
+
+    cout << "File System Structure:\n";
+    display(root);
+
+    string key = "Notes.txt";
+
+    cout << "\nSearching: " << key << endl;
+
+    if (search(root, key))
+        cout << "File Found!";
+    else
+        cout << "File Not Found!";
+
+    return 0;
+}
+
+Output:-
+File System Structure:
+Root
+  Documents
+    Notes.txt
+    Assignment.txt
+  Pictures
+    Photo.jpg
+  Videos
+    Movie.mp4
+
+Searching: Notes.txt
+File Found!
