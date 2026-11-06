@@ -1,0 +1,76 @@
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+    bool rightThread;
+
+    Node(int value) {
+        data = value;
+        left = right = NULL;
+        rightThread = false;
+    }
+};
+
+Node* previous = NULL;
+
+// Convert BST into a threaded tree
+void createThreads(Node* root) {
+    if (root == NULL) return;
+
+    createThreads(root->left);
+
+    if (previous != NULL && previous->right == NULL) {
+        previous->right = root;
+        previous->rightThread = true;
+    }
+
+    previous = root;
+
+    if (!root->rightThread)
+        createThreads(root->right);
+}
+
+// Find leftmost node
+Node* leftMost(Node* root) {
+    if (root == NULL) return NULL;
+
+    while (root->left != NULL)
+        root = root->left;
+
+    return root;
+}
+
+// Inorder traversal
+void inorder(Node* root) {
+    Node* current = leftMost(root);
+
+    while (current != NULL) {
+        cout << current->data << " ";
+
+        if (current->rightThread)
+            current = current->right;
+        else
+            current = leftMost(current->right);
+    }
+}
+
+int main() {
+    Node* root = new Node(20);
+    root->left = new Node(10);
+    root->right = new Node(30);
+    root->left->left = new Node(5);
+    root->left->right = new Node(15);
+
+    createThreads(root);
+
+    cout << "Threaded Binary Tree Inorder: ";
+    inorder(root);
+
+    return 0;
+}
+
+Output:-
+Threaded Binary Tree Inorder: 5 10 15 20 30
