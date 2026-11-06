@@ -78,3 +78,16 @@ int main() {
 
     return 0;
 }
+
+Output:-
+Recursive Inorder: 4 2 5 1 3
+Recursive Preorder: 1 2 4 5 3
+Recursive Postorder: 4 5 2 3 1
+Iterative Inorder: 4 2 5 1 3
+
+Tree structure:-
+        1
+       / \
+      2   3
+     / \
+    4   5
