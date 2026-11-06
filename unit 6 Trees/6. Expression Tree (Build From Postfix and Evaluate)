@@ -1,0 +1,100 @@
+
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+struct Node {
+    char data;
+    Node* left;
+    Node* right;
+
+    Node(char value) {
+        data = value;
+        left = right = NULL;
+    }
+};
+
+// Check operator
+bool isOperator(char ch) {
+    return ch == '+' || ch == '-' ||
+           ch == '*' || ch == '/';
+}
+
+// Build expression tree
+Node* buildTree(string postfix) {
+    stack<Node*> s;
+
+    for (char ch : postfix) {
+        if (ch >= '0' && ch <= '9') {
+            s.push(new Node(ch));
+        }
+        else if (isOperator(ch)) {
+            Node* node = new Node(ch);
+
+            node->right = s.top();
+            s.pop();
+
+            node->left = s.top();
+            s.pop();
+
+            s.push(node);
+        }
+    }
+
+    return s.top();
+}
+
+// Evaluate expression tree
+int evaluate(Node* root) {
+    if (root->left == NULL &&
+        root->right == NULL)
+        return root->data - '0';
+
+    int left = evaluate(root->left);
+    int right = evaluate(root->right);
+
+    switch (root->data) {
+        case '+': return left + right;
+        case '-': return left - right;
+        case '*': return left * right;
+        case '/': return left / right;
+    }
+
+    return 0;
+}
+
+// Inorder display
+void inorder(Node* root) {
+    if (root == NULL) return;
+
+    if (isOperator(root->data))
+        cout << "(";
+
+    inorder(root->left);
+    cout << root->data;
+    inorder(root->right);
+
+    if (isOperator(root->data))
+        cout << ")";
+}
+
+int main() {
+    string postfix = "23+5*";
+
+    Node* root = buildTree(postfix);
+
+    cout << "Postfix Expression: " << postfix;
+
+    cout << "\nInfix Expression: ";
+    inorder(root);
+
+    cout << "\nResult: " << evaluate(root);
+
+    return 0;
+}
+
+Output:-
+Postfix Expression: 23+5*
+Infix Expression: ((2+3)*5)
+Result: 25
