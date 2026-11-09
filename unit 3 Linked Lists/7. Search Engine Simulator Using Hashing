@@ -1,0 +1,116 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int SIZE = 10;
+
+class HashTable {
+    string chain[SIZE][SIZE];
+    int count[SIZE];
+
+    string linear[SIZE];
+
+    int hashFunction(string key) {
+        int sum = 0;
+
+        for (char c : key)
+            sum += c;
+
+        return sum % SIZE;
+    }
+
+public:
+    HashTable() {
+        for (int i = 0; i < SIZE; i++)
+            count[i] = 0;
+    }
+
+    void chainingInsert(string key) {
+        int index = hashFunction(key);
+
+        if (count[index] == SIZE) {
+            cout << "Chain Full\n";
+            return;
+        }
+
+        chain[index][count[index]++] = key;
+    }
+
+    void linearInsert(string key) {
+        int index = hashFunction(key);
+
+        for (int i = 0; i < SIZE; i++) {
+            int pos = (index + i) % SIZE;
+
+            if (linear[pos] == "") {
+                linear[pos] = key;
+                return;
+            }
+        }
+
+        cout << "Hash Table Full\n";
+    }
+
+    void displayChaining() {
+        cout << "\nSeparate Chaining:\n";
+
+        for (int i = 0; i < SIZE; i++) {
+            cout << i << ": ";
+
+            for (int j = 0; j < count[i]; j++)
+                cout << chain[i][j] << " -> ";
+
+            cout << "NULL\n";
+        }
+    }
+
+    void displayLinear() {
+        cout << "\nLinear Probing:\n";
+
+        for (int i = 0; i < SIZE; i++)
+            cout << i << ": " << linear[i] << endl;
+    }
+};
+
+int main() {
+    HashTable h1, h2;
+
+    string words[] = {
+        "cat", "act", "dog", "bat", "ant"
+    };
+
+    for (string word : words) {
+        h1.chainingInsert(word);
+        h2.linearInsert(word);
+    }
+
+    h1.displayChaining();
+    h2.displayLinear();
+
+    return 0;
+}
+Output:-
+Separate Chaining:
+0: NULL
+1: NULL
+2: NULL
+3: NULL
+4: NULL
+5: NULL
+6: cat -> act -> NULL
+7: dog -> NULL
+8: bat -> NULL
+9: ant -> NULL
+
+Linear Probing:
+0: 
+1: 
+2: 
+3: 
+4: 
+5: 
+6: cat
+7: act
+8: dog
+9: bat
