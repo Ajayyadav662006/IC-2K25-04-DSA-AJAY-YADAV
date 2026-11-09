@@ -1,0 +1,79 @@
+
+#include <iostream>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+int priority(char ch) {
+    if (ch == '^') return 3;
+    if (ch == '*' || ch == '/') return 2;
+    if (ch == '+' || ch == '-') return 1;
+    return 0;
+}
+
+string infixToPostfix(string exp) {
+    stack<char> s;
+    string result = "";
+
+    for (char ch : exp) {
+        if (isalnum(ch)) {
+            result += ch;
+        }
+        else if (ch == '(') {
+            s.push(ch);
+        }
+        else if (ch == ')') {
+            while (!s.empty() && s.top() != '(') {
+                result += s.top();
+                s.pop();
+            }
+            s.pop();
+        }
+        else {
+            while (!s.empty() && s.top() != '(' &&
+                  (priority(s.top()) > priority(ch) ||
+                  (priority(s.top()) == priority(ch) && ch != '^'))) {
+                result += s.top();
+                s.pop();
+            }
+            s.push(ch);
+        }
+    }
+
+    while (!s.empty()) {
+        result += s.top();
+        s.pop();
+    }
+
+    return result;
+}
+
+string infixToPrefix(string exp) {
+    reverse(exp.begin(), exp.end());
+
+    for (char &ch : exp) {
+        if (ch == '(') ch = ')';
+        else if (ch == ')') ch = '(';
+    }
+
+    string result = infixToPostfix(exp);
+    reverse(result.begin(), result.end());
+
+    return result;
+}
+
+int main() {
+    string exp = "A+B*C";
+
+    cout << "Infix Expression: " << exp << endl;
+    cout << "Postfix Expression: "
+         << infixToPostfix(exp) << endl;
+    cout << "Prefix Expression: "
+         << infixToPrefix(exp) << endl;
+
+    return 0;
+}
+Output:-
+Infix Expression: A+B*C
+Postfix Expression: ABC*+
+Prefix Expression: +A*BC
