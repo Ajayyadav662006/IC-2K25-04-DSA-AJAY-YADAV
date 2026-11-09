@@ -225,7 +225,7 @@ int main() {
 
     return 0;
 }
-Output:-
+Output:-// Bubble Sort Output 
 Enter number of elements: 5
 Enter elements: 50 20 40 10 30
 
