@@ -1,0 +1,151 @@
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *prev, *next;
+};
+
+class DoublyList {
+    Node* head;
+
+public:
+    DoublyList() {
+        head = NULL;
+    }
+
+    void insert(int value, int pos) {
+        Node* n = new Node{value, NULL, NULL};
+
+        if (pos <= 1 || head == NULL) {
+            n->next = head;
+            if (head)
+                head->prev = n;
+            head = n;
+            return;
+        }
+
+        Node* temp = head;
+
+        for (int i = 1; i < pos - 1 && temp->next; i++)
+            temp = temp->next;
+
+        n->next = temp->next;
+        n->prev = temp;
+
+        if (temp->next)
+            temp->next->prev = n;
+
+        temp->next = n;
+    }
+
+    void deleteNode(int pos) {
+        if (!head) return;
+
+        Node* temp = head;
+
+        if (pos <= 1) {
+            head = head->next;
+            if (head)
+                head->prev = NULL;
+            delete temp;
+            return;
+        }
+
+        for (int i = 1; i < pos && temp; i++)
+            temp = temp->next;
+
+        if (!temp) return;
+
+        if (temp->prev)
+            temp->prev->next = temp->next;
+
+        if (temp->next)
+            temp->next->prev = temp->prev;
+
+        delete temp;
+    }
+
+    void reverse() {
+        Node* temp = head;
+        Node* newHead = NULL;
+
+        while (temp) {
+            swap(temp->prev, temp->next);
+            newHead = temp;
+            temp = temp->prev;
+        }
+
+        head = newHead;
+    }
+
+    void concatenate(DoublyList& other) {
+        if (!head) {
+            head = other.head;
+            other.head = NULL;
+            return;
+        }
+
+        Node* temp = head;
+
+        while (temp->next)
+            temp = temp->next;
+
+        temp->next = other.head;
+
+        if (other.head)
+            other.head->prev = temp;
+
+        other.head = NULL;
+    }
+
+    void display() {
+        Node* temp = head;
+
+        while (temp) {
+            cout << temp->data << " <-> ";
+            temp = temp->next;
+        }
+
+        cout << "NULL\n";
+    }
+};
+
+int main() {
+    DoublyList a, b;
+
+    a.insert(10, 1);
+    a.insert(20, 2);
+    a.insert(30, 3);
+
+    cout << "Original List: ";
+    a.display();
+
+    a.insert(15, 2);
+    cout << "After Insertion: ";
+    a.display();
+
+    a.deleteNode(3);
+    cout << "After Deletion: ";
+    a.display();
+
+    a.reverse();
+    cout << "After Reverse: ";
+    a.display();
+
+    b.insert(40, 1);
+    b.insert(50, 2);
+
+    a.concatenate(b);
+    cout << "After Concatenation: ";
+    a.display();
+
+    return 0;
+}
+Output:- 
+Original List: 10 <-> 20 <-> 30 <-> NULL
+After Insertion: 10 <-> 15 <-> 20 <-> 30 <-> NULL
+After Deletion: 10 <-> 15 <-> 30 <-> NULL
+After Reverse: 30 <-> 15 <-> 10 <-> NULL
+After Concatenation: 30 <-> 15 <-> 10 <-> 40 <-> 50 <-> NULL
