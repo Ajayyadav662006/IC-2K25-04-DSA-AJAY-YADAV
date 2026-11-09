@@ -1,0 +1,175 @@
+
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct Student {
+    int roll;
+    string name;
+    float marks;
+};
+
+Student s[100];
+int n=0;
+
+void addStudent() {
+    cout<<"Enter Roll Number: ";
+    cin>>s[n].roll;
+
+    cout<<"Enter Name: ";
+    cin>>s[n].name;
+
+    cout<<"Enter Marks: ";
+    cin>>s[n].marks;
+
+    n++;
+    cout<<"Student Added Successfully!\n";
+}
+
+void display() {
+    if(n==0) {
+        cout<<"No records found!\n";
+        return;
+    }
+
+    cout<<"\nRoll No\tName\tMarks\n";
+
+    for(int i=0; i<n; i++) {
+        cout<<s[i].roll<<"\t"
+            <<s[i].name<<"\t"
+            <<s[i].marks<<endl;
+    }
+}
+
+void sortRoll() {
+    for(int i=0; i<n-1; i++)
+        for(int j=0; j<n-i-1; j++)
+            if(s[j].roll>s[j+1].roll)
+                swap(s[j],s[j+1]);
+
+    cout<<"Sorted by Roll Number!\n";
+}
+
+void sortName() {
+    for(int i=0; i<n-1; i++)
+        for(int j=0; j<n-i-1; j++)
+            if(s[j].name>s[j+1].name)
+                swap(s[j],s[j+1]);
+
+    cout<<"Sorted by Name!\n";
+}
+
+void sortMarks() {
+    for(int i=0; i<n-1; i++)
+        for(int j=0; j<n-i-1; j++)
+            if(s[j].marks<s[j+1].marks)
+                swap(s[j],s[j+1]);
+
+    cout<<"Sorted by Marks (Highest First)!\n";
+}
+
+void searchRoll() {
+    sortRoll();
+
+    int key;
+    cout<<"Enter Roll Number to Search: ";
+    cin>>key;
+
+    int low=0, high=n-1;
+
+    while(low<=high) {
+        int mid=(low+high)/2;
+
+        if(s[mid].roll==key) {
+            cout<<"\nStudent Found!\n";
+            cout<<"Roll: "<<s[mid].roll<<endl;
+            cout<<"Name: "<<s[mid].name<<endl;
+            cout<<"Marks: "<<s[mid].marks<<endl;
+            return;
+        }
+
+        if(s[mid].roll<key)
+            low=mid+1;
+        else
+            high=mid-1;
+    }
+
+    cout<<"Student Not Found!\n";
+}
+
+int main() {
+    int choice;
+
+    do {
+        cout<<"\n===== STUDENT RECORD MANAGER =====";
+        cout<<"\n1. Add Student";
+        cout<<"\n2. Display Students";
+        cout<<"\n3. Sort by Roll Number";
+        cout<<"\n4. Sort by Name";
+        cout<<"\n5. Sort by Marks";
+        cout<<"\n6. Search by Roll Number";
+        cout<<"\n7. Exit";
+
+        cout<<"\nEnter Choice: ";
+        cin>>choice;
+
+        switch(choice) {
+            case 1: addStudent(); break;
+            case 2: display(); break;
+            case 3: sortRoll(); break;
+            case 4: sortName(); break;
+            case 5: sortMarks(); break;
+            case 6: searchRoll(); break;
+            case 7: cout<<"Exiting Program...\n"; break;
+            default: cout<<"Invalid Choice!\n";
+        }
+
+    } while(choice!=7);
+
+    return 0;
+}
+Output:-
+===== STUDENT RECORD MANAGER =====
+1. Add Student
+2. Display Students
+3. Sort by Roll Number
+4. Sort by Name
+5. Sort by Marks
+6. Search by Roll Number
+7. Exit
+
+Enter Choice: 1
+Enter Roll Number: 103
+Enter Name: Rahul
+Enter Marks: 85
+Student Added Successfully!
+
+Enter Choice: 1
+Enter Roll Number: 101
+Enter Name: Aman
+Enter Marks: 92
+Student Added Successfully!
+
+Enter Choice: 1
+Enter Roll Number: 102
+Enter Name: Rohit
+Enter Marks: 78
+Student Added Successfully!
+
+Enter Choice: 3
+Sorted by Roll Number!
+
+Enter Choice: 2
+
+Roll No  Name    Marks
+101      Aman    92
+102      Rohit   78
+103      Rahul   85
+
+Enter Choice: 6
+Enter Roll Number to Search: 102
+
+Student Found!
+Roll: 102
+Name: Rohit
+Marks: 78
