@@ -1,0 +1,168 @@
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+class CircularList {
+    Node* tail;
+
+public:
+    CircularList() {
+        tail = NULL;
+    }
+
+    void insert(int value, int pos) {
+        Node* n = new Node{value, NULL};
+
+        if (!tail) {
+            n->next = n;
+            tail = n;
+            return;
+        }
+
+        if (pos <= 1) {
+            n->next = tail->next;
+            tail->next = n;
+            return;
+        }
+
+        Node* temp = tail->next;
+
+        for (int i = 1; i < pos - 1 && temp != tail; i++)
+            temp = temp->next;
+
+        n->next = temp->next;
+        temp->next = n;
+
+        if (temp == tail)
+            tail = n;
+    }
+
+    void deleteNode(int pos) {
+        if (!tail) return;
+
+        Node* head = tail->next;
+
+        if (pos <= 1) {
+            if (head == tail) {
+                delete tail;
+                tail = NULL;
+            } else {
+                tail->next = head->next;
+                delete head;
+            }
+            return;
+        }
+
+        Node* temp = head;
+
+        for (int i = 1; i < pos - 1 && temp != tail; i++)
+            temp = temp->next;
+
+        if (temp->next == head)
+            return;
+
+        Node* del = temp->next;
+        temp->next = del->next;
+
+        if (del == tail)
+            tail = temp;
+
+        delete del;
+    }
+
+    void reverse() {
+        if (!tail || tail->next == tail)
+            return;
+
+        Node* head = tail->next;
+        Node* prev = tail;
+        Node* curr = head;
+
+        do {
+            Node* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        } while (curr != head);
+
+        tail = head;
+    }
+
+    void concatenate(CircularList& other) {
+        if (!other.tail) return;
+
+        if (!tail) {
+            tail = other.tail;
+            other.tail = NULL;
+            return;
+        }
+
+        Node* head1 = tail->next;
+        Node* head2 = other.tail->next;
+
+        tail->next = head2;
+        other.tail->next = head1;
+
+        tail = other.tail;
+        other.tail = NULL;
+    }
+
+    void display() {
+        if (!tail) {
+            cout << "Empty\n";
+            return;
+        }
+
+        Node* temp = tail->next;
+
+        do {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        } while (temp != tail->next);
+
+        cout << "(Back to Head)\n";
+    }
+};
+
+int main() {
+    CircularList a, b;
+
+    a.insert(10, 1);
+    a.insert(20, 2);
+    a.insert(30, 3);
+
+    cout << "Original List: ";
+    a.display();
+
+    a.insert(15, 2);
+    cout << "After Insertion: ";
+    a.display();
+
+    a.deleteNode(3);
+    cout << "After Deletion: ";
+    a.display();
+
+    a.reverse();
+    cout << "After Reverse: ";
+    a.display();
+
+    b.insert(40, 1);
+    b.insert(50, 2);
+
+    a.concatenate(b);
+    cout << "After Concatenation: ";
+    a.display();
+
+    return 0;
+}
+Output:-
+Original List: 10 -> 20 -> 30 -> (Back to Head)
+After Insertion: 10 -> 15 -> 20 -> 30 -> (Back to Head)
+After Deletion: 10 -> 15 -> 30 -> (Back to Head)
+After Reverse: 30 -> 15 -> 10 -> (Back to Head)
+After Concatenation: 30 -> 15 -> 10 -> 40 -> 50 -> (Back to Head)
