@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void DFS(int node, vector<int> adj[],
+         bool visited[])
+{
+    visited[node] = true;
+
+    for(int x : adj[node])
+    {
+        if(!visited[x])
+            DFS(x, adj, visited);
+    }
+}
+
+int main()
+{
+    int n, e, u, v;
+
+    cout << "Enter vertices: ";
+    cin >> n;
+
+    vector<int> adj[10];
+    bool visited[10] = {false};
+
+    cout << "Enter edges: ";
+    cin >> e;
+
+    for(int i = 0; i < e; i++)
+    {
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    DFS(0, adj, visited);
+
+    bool connected = true;
+
+    for(int i = 0; i < n; i++)
+    {
+        if(!visited[i])
+            connected = false;
+    }
+
+    if(connected)
+        cout << "Network is Connected";
+    else
+        cout << "Network is Not Connected";
+
+    return 0;
+}
+Output:-
+Enter vertices: 5
+Enter edges: 4
+0 1
+1 2
+2 3
+3 4
+
+Network is Connected
