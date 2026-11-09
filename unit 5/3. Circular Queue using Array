@@ -1,0 +1,100 @@
+
+#include <iostream>
+using namespace std;
+
+#define SIZE 5
+
+class CircularQueue {
+    int arr[SIZE];
+    int front, rear;
+
+public:
+    CircularQueue() {
+        front = rear = -1;
+    }
+
+    void enqueue(int x) {
+        if ((rear + 1) % SIZE == front) {
+            cout << "Queue is Full\n";
+            return;
+        }
+
+        if (front == -1)
+            front = 0;
+
+        rear = (rear + 1) % SIZE;
+        arr[rear] = x;
+
+        cout << x << " inserted\n";
+    }
+
+    void dequeue() {
+        if (front == -1) {
+            cout << "Queue is Empty\n";
+            return;
+        }
+
+        cout << "Deleted: " << arr[front] << endl;
+
+        if (front == rear) {
+            front = rear = -1;
+        } else {
+            front = (front + 1) % SIZE;
+        }
+    }
+
+    void display() {
+        if (front == -1) {
+            cout << "Queue is Empty\n";
+            return;
+        }
+
+        int i = front;
+
+        cout << "Queue: ";
+
+        while (true) {
+            cout << arr[i] << " ";
+
+            if (i == rear)
+                break;
+
+            i = (i + 1) % SIZE;
+        }
+
+        cout << endl;
+    }
+};
+
+int main() {
+    CircularQueue q;
+
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+    q.enqueue(40);
+
+    q.display();
+
+    q.dequeue();
+    q.dequeue();
+
+    q.enqueue(50);
+    q.enqueue(60);
+
+    q.display();
+
+    return 0;
+}
+
+Output:-
+10 inserted
+20 inserted
+30 inserted
+40 inserted
+Queue: 10 20 30 40
+Deleted: 10
+Deleted: 20
+50 inserted
+60 inserted
+Queue: 30 40 50 60
