@@ -1,0 +1,130 @@
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+class SinglyList {
+    Node* head;
+
+public:
+    SinglyList() {
+        head = NULL;
+    }
+
+    void insert(int value, int pos) {
+        Node* n = new Node{value, NULL};
+
+        if (pos <= 1 || head == NULL) {
+            n->next = head;
+            head = n;
+            return;
+        }
+
+        Node* temp = head;
+        for (int i = 1; i < pos - 1 && temp->next; i++)
+            temp = temp->next;
+
+        n->next = temp->next;
+        temp->next = n;
+    }
+
+    void deleteNode(int pos) {
+        if (head == NULL) return;
+
+        Node* temp = head;
+
+        if (pos <= 1) {
+            head = head->next;
+            delete temp;
+            return;
+        }
+
+        for (int i = 1; i < pos - 1 && temp->next; i++)
+            temp = temp->next;
+
+        if (temp->next) {
+            Node* del = temp->next;
+            temp->next = del->next;
+            delete del;
+        }
+    }
+
+    void reverse() {
+        Node *prev = NULL, *curr = head, *next;
+
+        while (curr) {
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        head = prev;
+    }
+
+    void concatenate(SinglyList& other) {
+        if (!head) {
+            head = other.head;
+            other.head = NULL;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp->next)
+            temp = temp->next;
+
+        temp->next = other.head;
+        other.head = NULL;
+    }
+
+    void display() {
+        Node* temp = head;
+        while (temp) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL\n";
+    }
+};
+
+int main() {
+    SinglyList a, b;
+
+    a.insert(10, 1);
+    a.insert(20, 2);
+    a.insert(30, 3);
+
+    cout << "Original List: ";
+    a.display();
+
+    a.insert(15, 2);
+    cout << "After Insertion: ";
+    a.display();
+
+    a.deleteNode(3);
+    cout << "After Deletion: ";
+    a.display();
+
+    a.reverse();
+    cout << "After Reverse: ";
+    a.display();
+
+    b.insert(40, 1);
+    b.insert(50, 2);
+
+    a.concatenate(b);
+    cout << "After Concatenation: ";
+    a.display();
+
+    return 0;
+}
+Output:-
+Original List: 10 -> 20 -> 30 -> NULL
+After Insertion: 10 -> 15 -> 20 -> 30 -> NULL
+After Deletion: 10 -> 15 -> 30 -> NULL
+After Reverse: 30 -> 15 -> 10 -> NULL
+After Concatenation: 30 -> 15 -> 10 -> 40 -> 50 -> NULL
