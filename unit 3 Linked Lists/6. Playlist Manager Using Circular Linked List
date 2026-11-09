@@ -1,0 +1,102 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Node {
+    string song;
+    Node* next;
+};
+
+class Playlist {
+    Node* tail;
+    Node* current;
+
+public:
+    Playlist() {
+        tail = NULL;
+        current = NULL;
+    }
+
+    void addSong(string name) {
+        Node* n = new Node{name, NULL};
+
+        if (!tail) {
+            n->next = n;
+            tail = n;
+            current = n;
+        }
+        else {
+            n->next = tail->next;
+            tail->next = n;
+            tail = n;
+        }
+    }
+
+    void display() {
+        if (!tail) {
+            cout << "Playlist is empty\n";
+            return;
+        }
+
+        Node* temp = tail->next;
+
+        cout << "Playlist:\n";
+
+        do {
+            cout << temp->song << endl;
+            temp = temp->next;
+        } while (temp != tail->next);
+    }
+
+    void nextSong() {
+        if (!current) return;
+
+        current = current->next;
+        cout << "Now Playing: " << current->song << endl;
+    }
+
+    void previousSong() {
+        if (!current) return;
+
+        Node* temp = tail->next;
+
+        while (temp->next != current)
+            temp = temp->next;
+
+        current = temp;
+
+        cout << "Now Playing: " << current->song << endl;
+    }
+};
+
+int main() {
+    Playlist p;
+
+    p.addSong("Song A");
+    p.addSong("Song B");
+    p.addSong("Song C");
+
+    p.display();
+
+    cout << "\nCurrent Song: Song A\n";
+
+    p.nextSong();
+    p.nextSong();
+    p.nextSong();
+
+    p.previousSong();
+
+    return 0;
+}
+Output:-
+Playlist:
+Song A
+Song B
+Song C
+
+Current Song: Song A
+Now Playing: Song B
+Now Playing: Song C
+Now Playing: Song A
+Now Playing: Song C
