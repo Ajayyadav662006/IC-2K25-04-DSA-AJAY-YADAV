@@ -1,0 +1,107 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Node {
+    string line;
+    Node *prev, *next;
+};
+
+class TextEditor {
+    Node* head;
+
+public:
+    TextEditor() {
+        head = NULL;
+    }
+
+    void insertLine(string text) {
+        Node* n = new Node{text, NULL, NULL};
+
+        if (!head) {
+            head = n;
+            return;
+        }
+
+        Node* temp = head;
+
+        while (temp->next)
+            temp = temp->next;
+
+        temp->next = n;
+        n->prev = temp;
+    }
+
+    void deleteLine(int pos) {
+        Node* temp = head;
+
+        if (!temp) return;
+
+        for (int i = 1; i < pos && temp; i++)
+            temp = temp->next;
+
+        if (!temp) return;
+
+        if (temp->prev)
+            temp->prev->next = temp->next;
+        else
+            head = temp->next;
+
+        if (temp->next)
+            temp->next->prev = temp->prev;
+
+        delete temp;
+    }
+
+    void display() {
+        Node* temp = head;
+        int i = 1;
+
+        while (temp) {
+            cout << i++ << ". " << temp->line << endl;
+            temp = temp->next;
+        }
+    }
+
+    void forward() {
+        if (head && head->next)
+            head = head->next;
+
+        cout << "Current Line: " << head->line << endl;
+    }
+
+    void backward() {
+        if (head && head->prev)
+            head = head->prev;
+
+        cout << "Current Line: " << head->line << endl;
+    }
+};
+
+int main() {
+    TextEditor editor;
+
+    editor.insertLine("Hello World");
+    editor.insertLine("Welcome to C++");
+    editor.insertLine("Linked List Program");
+
+    cout << "Text Editor Content:\n";
+    editor.display();
+
+    editor.deleteLine(2);
+
+    cout << "\nAfter Deleting Line 2:\n";
+    editor.display();
+
+    return 0;
+}
+Output:-
+Text Editor Content:
+1. Hello World
+2. Welcome to C++
+3. Linked List Program
+
+After Deleting Line 2:
+1. Hello World
+2. Linked List Program
