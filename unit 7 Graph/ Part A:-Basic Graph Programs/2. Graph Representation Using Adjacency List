@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    int n, e, u, v;
+
+    cout << "Enter vertices: ";
+    cin >> n;
+
+    vector<int> adj[10];
+
+    cout << "Enter edges: ";
+    cin >> e;
+
+    for(int i = 0; i < e; i++)
+    {
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    cout << "\nAdjacency List:\n";
+
+    for(int i = 0; i < n; i++)
+    {
+        cout << i << " -> ";
+        for(int x : adj[i])
+            cout << x << " ";
+        cout << endl;
+    }
+
+    return 0;
+}
+Output:-
+Enter vertices: 4
+Enter edges: 4
+0 1
+0 2
+1 2
+2 3
+
+Adjacency List:
+0 -> 1 2
+1 -> 0 2
+2 -> 0 1 3
+3 -> 2
