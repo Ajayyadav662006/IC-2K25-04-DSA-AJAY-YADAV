@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> adj[10];
+bool visited[10];
+
+void DFS(int node)
+{
+    visited[node] = true;
+    cout << node << " ";
+
+    for(int x : adj[node])
+    {
+        if(!visited[x])
+            DFS(x);
+    }
+}
+
+int main()
+{
+    int n, e, u, v, count = 0;
+
+    cout << "Enter vertices and edges: ";
+    cin >> n >> e;
+
+    for(int i = 0; i < e; i++)
+    {
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    cout << "\nConnected Components:\n";
+
+    for(int i = 0; i < n; i++)
+    {
+        if(!visited[i])
+        {
+            count++;
+            cout << "Component " << count << ": ";
+            DFS(i);
+            cout << endl;
+        }
+    }
+
+    cout << "Total Components: " << count;
+
+    return 0;
+}
+Output:-
+Enter vertices and edges: 6 3
+0 1
+1 2
+3 4
+
+Connected Components:
+Component 1: 0 1 2
+Component 2: 3 4
+Component 3: 5
+
+Total Components: 3
