@@ -1,0 +1,43 @@
+
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int evaluatePostfix(string exp) {
+    stack<int> s;
+
+    for (char ch : exp) {
+        if (ch >= '0' && ch <= '9') {
+            s.push(ch - '0');
+        }
+        else {
+            int b = s.top();
+            s.pop();
+
+            int a = s.top();
+            s.pop();
+
+            switch (ch) {
+                case '+': s.push(a + b); break;
+                case '-': s.push(a - b); break;
+                case '*': s.push(a * b); break;
+                case '/': s.push(a / b); break;
+            }
+        }
+    }
+
+    return s.top();
+}
+
+int main() {
+    string exp = "23*54*+";
+
+    cout << "Postfix Expression: " << exp << endl;
+    cout << "Result: " << evaluatePostfix(exp);
+
+    return 0;
+}
+Output:-
+Postfix Expression: 23*54*+
+Result: 26
