@@ -1,0 +1,39 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a[100], n, pos, val;
+
+    cout << "Enter size: ";
+    cin >> n;
+
+    cout << "Enter elements: ";
+    for(int i = 0; i < n; i++)
+        cin >> a[i];
+
+    cout << "Enter position: ";
+    cin >> pos;
+
+    cout << "Enter value: ";
+    cin >> val;
+
+    for(int i = n; i >= pos; i--)
+        a[i] = a[i-1];
+
+    a[pos-1] = val;
+    n++;
+
+    cout << "Array after insertion: ";
+    for(int i = 0; i < n; i++)
+        cout << a[i] << " ";
+
+    return 0;
+}
+Output:-
+Enter size: 5
+Enter elements: 10 20 30 40 50
+Enter position: 3
+Enter value: 25
+
+Array after insertion:
+10 20 25 30 40 50
