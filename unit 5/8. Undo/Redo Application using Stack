@@ -1,0 +1,82 @@
+
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+class TextEditor {
+    string text;
+
+    stack<string> undoStack;
+    stack<string> redoStack;
+
+public:
+    void write(string newText) {
+        undoStack.push(text);
+
+        text += newText;
+
+        while (!redoStack.empty())
+            redoStack.pop();
+
+        cout << "Text added\n";
+    }
+
+    void undo() {
+        if (undoStack.empty()) {
+            cout << "Nothing to undo\n";
+            return;
+        }
+
+        redoStack.push(text);
+
+        text = undoStack.top();
+        undoStack.pop();
+
+        cout << "Undo successful\n";
+    }
+
+    void redo() {
+        if (redoStack.empty()) {
+            cout << "Nothing to redo\n";
+            return;
+        }
+
+        undoStack.push(text);
+
+        text = redoStack.top();
+        redoStack.pop();
+
+        cout << "Redo successful\n";
+    }
+
+    void display() {
+        cout << "Current Text: " << text << endl;
+    }
+};
+
+int main() {
+    TextEditor editor;
+
+    editor.write("Hello ");
+    editor.write("World");
+
+    editor.display();
+
+    editor.undo();
+    editor.display();
+
+    editor.redo();
+    editor.display();
+
+    return 0;
+}
+
+Output:-
+Text added
+Text added
+Current Text: Hello World
+Undo successful
+Current Text: Hello
+Redo successful
+Current Text: Hello World
