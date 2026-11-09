@@ -1,0 +1,243 @@
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+const int SIZE=10;
+
+struct Word {
+    string key, meaning;
+};
+
+vector<Word> dictionary;
+
+// Hash table for Separate Chaining
+vector<Word> chainTable[SIZE];
+
+// Hash table for Linear Probing
+Word linearTable[SIZE];
+bool occupied[SIZE]={false};
+
+// Hash Function
+int hashFunction(string key) {
+    int sum=0;
+
+    for(char c:key)
+        sum+=c;
+
+    return sum%SIZE;
+}
+
+// Add Word
+void addWord() {
+    Word w;
+
+    cout<<"Enter Word: ";
+    cin>>w.key;
+
+    cout<<"Enter Meaning: ";
+    cin.ignore();
+    getline(cin,w.meaning);
+
+    dictionary.push_back(w);
+
+    // Separate Chaining
+    int index=hashFunction(w.key);
+    chainTable[index].push_back(w);
+
+    // Linear Probing
+    int i=index;
+    while(occupied[i]) {
+        i=(i+1)%SIZE;
+
+        if(i==index) {
+            cout<<"Linear Hash Table Full!\n";
+            return;
+        }
+    }
+
+    linearTable[i]=w;
+    occupied[i]=true;
+
+    cout<<"Word Added Successfully!\n";
+}
+
+// Binary Search
+void binarySearch() {
+    string key;
+
+    cout<<"Enter Word to Search: ";
+    cin>>key;
+
+    sort(dictionary.begin(),dictionary.end(),
+        [](Word a,Word b) {
+            return a.key<b.key;
+        });
+
+    int low=0, high=dictionary.size()-1;
+
+    while(low<=high) {
+        int mid=(low+high)/2;
+
+        if(dictionary[mid].key==key) {
+            cout<<"Meaning: "
+                <<dictionary[mid].meaning<<endl;
+            return;
+        }
+
+        if(dictionary[mid].key<key)
+            low=mid+1;
+        else
+            high=mid-1;
+    }
+
+    cout<<"Word Not Found!\n";
+}
+
+// Separate Chaining Search
+void chainingSearch() {
+    string key;
+
+    cout<<"Enter Word: ";
+    cin>>key;
+
+    int index=hashFunction(key);
+
+    for(auto w:chainTable[index]) {
+        if(w.key==key) {
+            cout<<"Meaning: "<<w.meaning<<endl;
+            return;
+        }
+    }
+
+    cout<<"Word Not Found!\n";
+}
+
+// Linear Probing Search
+void linearSearch() {
+    string key;
+
+    cout<<"Enter Word: ";
+    cin>>key;
+
+    int index=hashFunction(key);
+    int start=index;
+
+    while(occupied[index]) {
+        if(linearTable[index].key==key) {
+            cout<<"Meaning: "
+                <<linearTable[index].meaning<<endl;
+            return;
+        }
+
+        index=(index+1)%SIZE;
+
+        if(index==start)
+            break;
+    }
+
+    cout<<"Word Not Found!\n";
+}
+
+// Display Chaining Table
+void displayChaining() {
+    cout<<"\nSeparate Chaining Hash Table\n";
+
+    for(int i=0; i<SIZE; i++) {
+        cout<<i<<" -> ";
+
+        for(auto w:chainTable[i])
+            cout<<w.key<<" -> ";
+
+        cout<<"NULL\n";
+    }
+}
+
+// Display Linear Probing Table
+void displayLinear() {
+    cout<<"\nLinear Probing Hash Table\n";
+
+    for(int i=0; i<SIZE; i++) {
+        cout<<i<<" -> ";
+
+        if(occupied[i])
+            cout<<linearTable[i].key;
+        else
+            cout<<"EMPTY";
+
+        cout<<endl;
+    }
+}
+
+int main() {
+    int choice;
+
+    do {
+        cout<<"\n===== SEARCH ENGINE SIMULATOR =====";
+        cout<<"\n1. Add Word";
+        cout<<"\n2. Search Using Binary Search";
+        cout<<"\n3. Search Using Separate Chaining";
+        cout<<"\n4. Search Using Linear Probing";
+        cout<<"\n5. Display Chaining Table";
+        cout<<"\n6. Display Linear Probing Table";
+        cout<<"\n7. Exit";
+
+        cout<<"\nEnter Choice: ";
+        cin>>choice;
+
+        switch(choice) {
+            case 1: addWord(); break;
+            case 2: binarySearch(); break;
+            case 3: chainingSearch(); break;
+            case 4: linearSearch(); break;
+            case 5: displayChaining(); break;
+            case 6: displayLinear(); break;
+            case 7: cout<<"Program Exited!\n"; break;
+            default: cout<<"Invalid Choice!\n";
+        }
+
+    } while(choice!=7);
+
+    return 0;
+}
+Output:-
+===== SEARCH ENGINE SIMULATOR =====
+
+1. Add Word
+2. Search Using Binary Search
+3. Search Using Separate Chaining
+4. Search Using Linear Probing
+5. Display Chaining Table
+6. Display Linear Probing Table
+7. Exit
+
+Enter Choice: 1
+
+Enter Word: Apple
+Enter Meaning: A fruit
+Word Added Successfully!
+
+Enter Choice: 1
+
+Enter Word: Mango
+Enter Meaning: King of fruits
+Word Added Successfully!
+
+Enter Choice: 2
+
+Enter Word to Search: Apple
+Meaning: A fruit
+
+Enter Choice: 3
+
+Enter Word: Mango
+Meaning: King of fruits
+
+Enter Choice: 4
+
+Enter Word: Apple
+Meaning: A fruit
+
+Enter Choice: 7
+Program Exited!
