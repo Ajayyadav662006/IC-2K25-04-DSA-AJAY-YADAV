@@ -1,0 +1,46 @@
+
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int main() {
+    queue<int> q;
+
+    int n, process;
+
+    cout << "Enter number of processes: ";
+    cin >> n;
+
+    for (int i = 1; i <= n; i++) {
+        cout << "Enter Process ID: ";
+        cin >> process;
+
+        q.push(process);
+    }
+
+    cout << "\nProcess Execution Order:\n";
+
+    while (!q.empty()) {
+        cout << "Process P"
+             << q.front()
+             << " is executing\n";
+
+        q.pop();
+    }
+
+    cout << "All processes completed\n";
+
+    return 0;
+}
+
+Output:-
+Enter number of processes: 3
+Enter Process ID: 1
+Enter Process ID: 2
+Enter Process ID: 3
+
+Process Execution Order:
+Process P1 is executing
+Process P2 is executing
+Process P3 is executing
+All processes completed
