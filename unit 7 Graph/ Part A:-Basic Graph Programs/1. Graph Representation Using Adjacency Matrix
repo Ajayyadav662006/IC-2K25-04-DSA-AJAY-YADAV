@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n, e, u, v;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    int adj[10][10] = {0};
+
+    cout << "Enter number of edges: ";
+    cin >> e;
+
+    cout << "Enter edges:\n";
+    for(int i = 0; i < e; i++)
+    {
+        cin >> u >> v;
+        adj[u][v] = 1;
+        adj[v][u] = 1;
+    }
+
+    cout << "\nAdjacency Matrix:\n";
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < n; j++)
+            cout << adj[i][j] << " ";
+        cout << endl;
+    }
+
+    return 0;
+}
+Output:-
+Enter number of vertices: 4
+Enter number of edges: 4
+Enter edges:
+0 1
+0 2
+1 2
+2 3
+
+Adjacency Matrix:
+0 1 1 0
+1 0 1 0
+1 1 0 1
+0 0 1 0
