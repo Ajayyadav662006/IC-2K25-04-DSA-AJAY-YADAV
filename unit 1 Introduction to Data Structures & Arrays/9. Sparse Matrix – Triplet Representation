@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a[10][10], triplet[100][3];
+    int r, c, k = 1;
+
+    cout << "Enter rows and columns: ";
+    cin >> r >> c;
+
+    cout << "Enter matrix elements:\n";
+
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++)
+            cin >> a[i][j];
+
+    triplet[0][0] = r;
+    triplet[0][1] = c;
+
+    for(int i = 0; i < r; i++) {
+        for(int j = 0; j < c; j++) {
+            if(a[i][j] != 0) {
+                triplet[k][0] = i;
+                triplet[k][1] = j;
+                triplet[k][2] = a[i][j];
+                k++;
+            }
+        }
+    }
+
+    triplet[0][2] = k-1;
+
+    cout << "\nTriplet Representation:\n";
+    cout << "Row Col Value\n";
+
+    for(int i = 0; i < k; i++) {
+        for(int j = 0; j < 3; j++)
+            cout << triplet[i][j] << " ";
+        cout << endl;
+    }
+
+    return 0;
+} 
+Output :-
+Enter rows and columns: 3 3
+Enter matrix elements:
+0 0 5
+0 8 0
+3 0 0
+
+Triplet Representation:
+Row Col Value
+3 3 3
+0 2 5
+1 1 8
+2 0 3
