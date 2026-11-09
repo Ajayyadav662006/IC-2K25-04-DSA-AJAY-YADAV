@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int main()
+{
+    int n, e, u, v, start;
+
+    cout << "Enter vertices: ";
+    cin >> n;
+
+    vector<int> adj[10];
+    bool visited[10] = {false};
+
+    cout << "Enter edges: ";
+    cin >> e;
+
+    for(int i = 0; i < e; i++)
+    {
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    cout << "Enter starting vertex: ";
+    cin >> start;
+
+    queue<int> q;
+    visited[start] = true;
+    q.push(start);
+
+    cout << "BFS Traversal: ";
+
+    while(!q.empty())
+    {
+        int node = q.front();
+        q.pop();
+
+        cout << node << " ";
+
+        for(int x : adj[node])
+        {
+            if(!visited[x])
+            {
+                visited[x] = true;
+                q.push(x);
+            }
+        }
+    }
+
+    return 0;
+}
+Output:-
+Enter vertices: 5
+Enter edges: 5
+0 1
+0 2
+1 3
+1 4
+2 4
+Enter starting vertex: 0
+
+BFS Traversal: 0 1 2 3 4
