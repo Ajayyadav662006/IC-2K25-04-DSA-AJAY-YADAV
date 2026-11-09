@@ -1,0 +1,137 @@
+
+#include <iostream>
+#include <stack>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int precedence(char op) {
+    if (op == '+' || op == '-')
+        return 1;
+
+    if (op == '*' || op == '/')
+        return 2;
+
+    return 0;
+}
+
+int calculate(int a, int b, char op) {
+    switch (op) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+
+        case '/':
+            if (b == 0) {
+                throw runtime_error("Division by zero");
+            }
+            return a / b;
+    }
+
+    return 0;
+}
+
+void apply(stack<int>& values,
+           stack<char>& ops) {
+
+    int b = values.top();
+    values.pop();
+
+    int a = values.top();
+    values.pop();
+
+    char op = ops.top();
+    ops.pop();
+
+    values.push(calculate(a, b, op));
+}
+
+int evaluate(string s) {
+    stack<int> values;
+    stack<char> ops;
+
+    for (int i = 0; i < s.length(); i++) {
+
+        if (isspace(s[i]))
+            continue;
+
+        if (isdigit(s[i])) {
+            int num = 0;
+
+            while (i < s.length() &&
+                   isdigit(s[i])) {
+                num = num * 10 + (s[i] - '0');
+                i++;
+            }
+
+            values.push(num);
+            i--;
+        }
+
+        else if (s[i] == '(') {
+            ops.push(s[i]);
+        }
+
+        else if (s[i] == ')') {
+            while (!ops.empty() &&
+                   ops.top() != '(') {
+                apply(values, ops);
+            }
+
+            if (ops.empty())
+                throw runtime_error("Invalid expression");
+
+            ops.pop();
+        }
+
+        else if (s[i] == '+' || s[i] == '-' ||
+                 s[i] == '*' || s[i] == '/') {
+
+            while (!ops.empty() &&
+                   ops.top() != '(' &&
+                   precedence(ops.top()) >=
+                   precedence(s[i])) {
+                apply(values, ops);
+            }
+
+            ops.push(s[i]);
+        }
+
+        else {
+            throw runtime_error("Invalid character");
+        }
+    }
+
+    while (!ops.empty()) {
+        if (ops.top() == '(')
+            throw runtime_error("Invalid parentheses");
+
+        apply(values, ops);
+    }
+
+    if (values.size() != 1)
+        throw runtime_error("Invalid expression");
+
+    return values.top();
+}
+
+int main() {
+    string expression;
+
+    cout << "Enter expression: ";
+    getline(cin, expression);
+
+    try {
+        cout << "Result: "
+             << evaluate(expression) << endl;
+    }
+    catch (const exception& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+
+    return 0;
+}
+
+Output:-
+Enter expression: 10+2*3
+Result: 16
