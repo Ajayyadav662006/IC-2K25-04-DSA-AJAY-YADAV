@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a[10][10], r, c, posR, posC, val;
+
+    cout << "Enter rows and columns: ";
+    cin >> r >> c;
+
+    cout << "Enter matrix elements:\n";
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++)
+            cin >> a[i][j];
+
+    cout << "Enter row and column: ";
+    cin >> posR >> posC;
+
+    cout << "Enter value: ";
+    cin >> val;
+
+    if(posR < 1 || posR > r || posC < 1 || posC > c) {
+        cout << "Invalid position";
+        return 0;
+    }
+
+    a[posR-1][posC-1] = val;
+
+    cout << "Updated matrix:\n";
+    for(int i = 0; i < r; i++) {
+        for(int j = 0; j < c; j++)
+            cout << a[i][j] << " ";
+        cout << endl;
+    }
+
+    return 0;
+}
+Output:-
+Enter rows and columns: 2 2
+Enter matrix elements:
+1 2
+3 4
+Enter row and column: 2 2
+Enter value: 9
+
+Updated matrix:
+1 2
+3 9
