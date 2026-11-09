@@ -1,0 +1,151 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a[10][10], b[10][10], result[10][10];
+    int r, c, choice;
+
+    cout << "Enter rows and columns: ";
+    cin >> r >> c;
+
+    cout << "Enter first matrix:\n";
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++)
+            cin >> a[i][j];
+
+    cout << "\nEnter second matrix:\n";
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++)
+            cin >> b[i][j];
+
+    do {
+        cout << "\n--- MATRIX CALCULATOR ---\n";
+        cout << "1. Addition\n";
+        cout << "2. Multiplication\n";
+        cout << "3. Transpose\n";
+        cout << "4. Determinant\n";
+        cout << "5. Exit\n";
+
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch(choice) {
+
+        case 1:
+            cout << "Addition:\n";
+            for(int i = 0; i < r; i++) {
+                for(int j = 0; j < c; j++)
+                    cout << a[i][j] + b[i][j] << " ";
+                cout << endl;
+            }
+            break;
+
+        case 2:
+            if(r != c) {
+                cout << "Multiplication requires square matrices here";
+                break;
+            }
+
+            for(int i = 0; i < r; i++) {
+                for(int j = 0; j < c; j++) {
+                    result[i][j] = 0;
+                    for(int k = 0; k < c; k++)
+                        result[i][j] += a[i][k] * b[k][j];
+                }
+            }
+
+            cout << "Multiplication:\n";
+            for(int i = 0; i < r; i++) {
+                for(int j = 0; j < c; j++)
+                    cout << result[i][j] << " ";
+                cout << endl;
+            }
+            break;
+
+        case 3:
+            cout << "Transpose:\n";
+            for(int j = 0; j < c; j++) {
+                for(int i = 0; i < r; i++)
+                    cout << a[i][j] << " ";
+                cout << endl;
+            }
+            break;
+
+        case 4:
+            if(r != c) {
+                cout << "Determinant requires square matrix";
+                break;
+            }
+
+            if(r == 1)
+                cout << "Determinant = " << a[0][0];
+
+            else if(r == 2) {
+                int det = a[0][0]*a[1][1]
+                        - a[0][1]*a[1][0];
+                cout << "Determinant = " << det;
+            }
+
+            else if(r == 3) {
+                int det =
+                    a[0][0]*(a[1][1]*a[2][2]-a[1][2]*a[2][1])
+                  - a[0][1]*(a[1][0]*a[2][2]-a[1][2]*a[2][0])
+                  + a[0][2]*(a[1][0]*a[2][1]-a[1][1]*a[2][0]);
+
+                cout << "Determinant = " << det;
+            }
+            else
+                cout << "Only 1x1, 2x2 and 3x3 supported";
+
+            break;
+
+        case 5:
+            cout << "Exiting...";
+            break;
+
+        default:
+            cout << "Invalid choice";
+        }
+
+    } while(choice != 5);
+
+    return 0;
+}
+Output:-
+Enter rows and columns: 2 2
+
+Enter first matrix:
+1 2
+3 4
+
+Enter second matrix:
+5 6
+7 8
+
+--- MATRIX CALCULATOR ---
+1. Addition
+2. Multiplication
+3. Transpose
+4. Determinant
+5. Exit
+
+Enter choice: 1
+Addition:
+6 8
+10 12
+
+Enter choice: 2
+Multiplication:
+19 22
+43 50
+
+Enter choice: 3
+Transpose:
+1 3
+2 4
+
+Enter choice: 4
+Determinant = -2
+
+Enter choice: 5
+Exiting...
