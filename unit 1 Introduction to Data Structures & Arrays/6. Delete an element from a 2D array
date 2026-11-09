@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a[10][10], r, c, x, y;
+
+    cout << "Enter rows and columns: ";
+    cin >> r >> c;
+
+    cout << "Enter matrix elements:\n";
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++)
+            cin >> a[i][j];
+
+    cout << "Enter position to delete: ";
+    cin >> x >> y;
+
+    if(x < 1 || x > r || y < 1 || y > c) {
+        cout << "Invalid position";
+        return 0;
+    }
+
+    a[x-1][y-1] = 0;
+
+    cout << "Matrix after deletion:\n";
+    for(int i = 0; i < r; i++) {
+        for(int j = 0; j < c; j++)
+            cout << a[i][j] << " ";
+        cout << endl;
+    }
+
+    return 0;
+}
+Output:-
+Enter rows and columns: 2 2
+Enter matrix elements:
+1 2
+3 4
+Enter position to delete: 1 2
+
+Matrix after deletion:
+1 0
+3 4
